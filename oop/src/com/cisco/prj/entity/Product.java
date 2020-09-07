@@ -1,5 +1,6 @@
 package com.cisco.prj.entity;
 
+// meant only as generalization; but can't instantiate
 public abstract class Product  {
 	private int id;
 	private String name;
@@ -38,4 +39,6 @@ public abstract class Product  {
 	}
 	
 	public abstract boolean isExpensive();
+	
+	
 }
