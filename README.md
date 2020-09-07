@@ -220,11 +220,283 @@ Softwares Required:
 		1) Generalization and Specialization
 		2) Realization
 		3) Association
+
+		========
+
+		abstract ==> Incomplete
+		Can't instantiate abstract classes
+
+		================
+
+		packages ==> logically group related classses [ entity, service , dao, utility]
+
+		com.cisco.prj/module.classtype
+
+		packages are folder
+			"com" folder contains "cisco" folder contains "prj" --
+
+
+		Tv[] tvs = ...
+
+		Mobile[] mobiles = ...
+
+
+		for(Tv t : tvs) {
+				///
+		}
+
+		for(Mobile m : mobiles) {
+				// ..
+		}
+
+
+		Microwave[] mws = ,,,,
+
+		for(Microwave mw : mws) {
+				///
+		}
+
+		===========
+
+		TypeChecking:
+
+		Product p = new Mobile();
+
+		p instanceof Mobile ==> true
+
+		p instanceOf Product ===> true
+
+		p instanceof Object ===> true
+
+		p instanceof Tv ==> false;
+
+
+		=======
+			Product p = new Mobile();
+			p.getClass() == Mobile.class ===> true
+			p.getClass() == Product.class ===> false
+			p.getClass() == Object.class ===> false
+
+
+
+		int x = 10;
+
+		Object o = x;
+
+		String s = new String();
+
+		Object o = s;
+
+	===========================================================================
+
+		Realization Relationship
+		========================
+			A Component / Object will realize the behaviour specified by other in order to communicate.
+
+			this is done using interfaces
+
+		In Java:
+
+			interface MobileDao {	
+				void addMobile(Mobile m);
+				Mobile getMobile(int id);
+			}
+
+		Why Program to interface:
+			1) DESIGN
+			2) IMPLMENTATION
+			3) TESTING
+			4) INTEGRATION
+			5) LOOSE Coupling
+
+			DESIGN: [ take the requirement and design interface]
+
+
+			Class loader loads a class if the class is used any where in application
+
+			Abc.java ==> Abc.class
+			if Abc is not used in any part of application classloader wont load this class
+
+			Not used like:
+				Abc obj;
+				or new Abc();
+
+
+			If i Know class name in advance
+				new className();
+
+		=====================
+
+		Functional Interface:
+
+		Term given in Java 8 to specifiy that an interface has only one method
+		to implement
+
+		@FunctionalInterface
+		interface Flyable {
+			void fly();
+		}
+
+
+		not a functional interface:
+		interface MobileDao {	
+				void addMobile(Mobile m);
+				Mobile getMobile(int id);
+		}
+
+
+		===============
+
+
+		interface Flyable {
+			void fly();
+		}
+
+		class Bird implements Flyable {
+				// state
+				// behaviour
+
+				public void fly() {
+
+				}
+		}
+
+		class AeroPlane implements Flyable {
+				// state
+				// behaviour
+				public void fly() {
+
+				}
+		}
+
+		Flyable f = new Flyable(); // ERROR
+		Flyable f = new Bird(); // valid
+		Flyable f = new AeroPlane() ; // valid
+
+		=============
+		Anonymous class: 
+		Flyable f = new Flyable() {
+			public void fly() {
+					jump from 10th floor!!!
+			}
+		};
+
+		class Dummy1 implements Flyable {
+				public void fly() {
+					jump from 10th floor!!!
+			}
+		}
+
+		class Dummy2 implements Flyable {
+				public void fly() {
+					jump from 12th floor!!!
+			}
+		}
+
+==================================================================
+
+	Annotation
+		==> Metadata ==> data about data
+	From Java programmers perspective metdata is provided using XML or annotation
+
+	SAX / DOM parsers are required to process XML data
+
+	Annotation : Java Compiler itself can compile annoation
+
+
+	Annotation:
+		1) Who uses it?
+			a) COMPILER
+			b) CLASSLOADER
+			c) RuNTiME
+		2) Where can i place the annoation?
+			a) TYPE [ class, interface, annotation , Enum]
+			b) FIELD
+			c) Constructor
+			d) method
+
+			override annotation:
+
+			@Target(ElementType.METHOD)
+			@Retention(RetentionPolicy.SOURCE)
+			public @interface Override {
+			}
+
+
+				@Override
+				public boolean isExpensive() {
+					// write logic
+					return false;
+				}
+
+			class Base {
+					void doTask() {
+
+					}
+			}
+
+			class Derived extends Base {
+					@Override
+					public void dotask() { // override
+
+					}
+
+					@Override
+					public void taskDone() {
+
+					}
+			}
+
+			Base b = new Derived();
+			b.doTask();
+
+Annotation:
+		1) Who uses it?
+			a) COMPILER
+			b) CLASSLOADER
+			c) RuNTiME
+		2) Where can i place the annoation?
+			a) TYPE [ class, interface, annotation , Enum]
+			b) FIELD
+			c) Constructor
+			d) method
+
+
+			@Target(ElementType.TYPE)
+			@Retention(RetentionPolicy.CLASS)
+			public @interface Mobile {
+				String name(); // not a field, not a method; it's a property
+			}
+
+			@Mobile(name="Samsung")
+			public class PubG extends Game {
+
+			}
+
+
+			Annotations can't have state and behaviour; it has only properties
+
+			==========
+
+
+
+			@Target(ElementType.METHOD)
+			@Retention(RetentionPolicy.RUNTIME)
+			public @interface RequestMapping {
+				String value(); // not a field, not a method; it's a property
+			}
+
+
+			public class ProductController {
+
+				@RequestMapping(value="http://localhost:8080/products")
+				void doTask() {
+
+				}
+			}
+
+			== within JRE
+			if any requests come with "http://localhost:8080/products"
+			======================================
+
 			
-
-		
-
-		
-
-
-	

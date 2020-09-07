@@ -1,5 +1,6 @@
 package com.cisco.prj.entity;
 
+ 
 public class Tv extends Product {
 	private String screenType;
 

@@ -1,7 +1,11 @@
 package com.cisco.prj.entity;
 
+import com.cisco.prj.annotation.Column;
+import com.cisco.prj.annotation.Table;
+
 // meant only as generalization; but can't instantiate
-public abstract class Product  {
+@Table(name="products")
+public abstract class Product  implements Comparable {
 	private int id;
 	private String name;
 	private double price;
@@ -13,20 +17,26 @@ public abstract class Product  {
 		this.name = name;
 		this.price = price;
 	}
+	
+	@Column(name="PID", type="INTEGER")
 	public int getId() {
 		return id;
+	}
+	
+	@Column(name="PRD_NAME")
+	public String getName() {
+		return name;
+	}
+	
+	@Column(name="AMOUNT", type="DOUBLE")
+	public double getPrice() {
+		return price;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
-	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public double getPrice() {
-		return price;
 	}
 	public void setPrice(double price) {
 		this.price = price;
@@ -40,5 +50,9 @@ public abstract class Product  {
 	
 	public abstract boolean isExpensive();
 	
-	
+	@Override
+	public int compareTo(Object o) {
+		Product other = (Product) o;
+		return Double.compare(this.getPrice(), other.getPrice());
+	}
 }
