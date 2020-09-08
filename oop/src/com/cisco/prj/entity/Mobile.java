@@ -1,5 +1,9 @@
 package com.cisco.prj.entity;
 
+import com.cisco.prj.annotation.Column;
+import com.cisco.prj.annotation.Table;
+
+@Table(name="mobile")
 public class Mobile extends Product {
 	private String connectivity;
 
@@ -10,7 +14,8 @@ public class Mobile extends Product {
 		super(id, name, price);
 		this.connectivity = connectivity;
 	}
-
+	
+	@Column(name="CONNECT")
 	public String getConnectivity() {
 		return connectivity;
 	}

@@ -499,4 +499,347 @@ Annotation:
 			if any requests come with "http://localhost:8080/products"
 			======================================
 
-			
+
+			@Target(ElementType.TYPE)
+			@Retention(RetentionPolicy.RUNTIME)
+			public @interface Table {
+				String name();  
+			}
+
+			@Target(ElementType.METHOD)
+			@Retention(RetentionPolicy.RUNTIME)
+			public @interface Column {
+				String name();  
+				String type();
+			}
+
+			@Table(name="emps")
+			public class Employee {
+
+				@Column(name="EMP_ID", type="NUMERIC(12)")
+				getId() {
+
+				}
+				@Column(name="ENAME")
+				getName() {
+
+				}
+			}
+
+		===========
+
+		String is immutable
+
+		String s1 = new String("Hello");
+
+		s1 += "World";
+
+		s1 += "123";
+
+		s1 += "Bye";
+
+============================================================
+
+	Day 2:
+	------
+		Recap: Generalization and Specialization; Realization
+
+		keywords: extends; implements 
+
+		Object is the root class of all classes in Java
+
+		-----------------
+
+		interface; anonymous class and lambda expression
+
+		---------------
+
+		Annotations; RetentionPolicy.RUNTIME
+
+		--------------------------------------------
+
+		Any Questions?
+
+	-------------------------------
+
+		Java Collection Framework:
+
+			2 interfaces for comparing:
+				a) Comparable
+					Natural Comparison:
+					String[] names = {"George", "Lee", "Angelina", "Brad" , "Clooney" };
+					We expect the sorted order to be:
+					Angelina, Brad , Clooney, George and Lee
+
+					Why not:
+					Lee, Brad, George, .... Angelina [ Isn't this sorted?]
+
+					Logic is a part of class on wich comparision happens:
+						Example: String and Product has the logic
+							public int compareTo(Object obj);
+				b) Comparator
+					Custom implmentation of comparision;
+					Example: String compare by length
+
+					Logic is a part of client code
+
+					Lee, Brad, George, .... Angelina [ Isn't this sorted?]
+
+					interface Comparable {
+						int compareTo(Object o);
+					}
+
+					interface Comparator {
+							int compare(Object o1, Object o2)
+					}
+
+					======
+
+					public class String implements Comparable {
+							//
+							public int compareTo(Object o) {
+									context is "this" [ s1 ]
+									argument is "o" [ s2 ]
+							}
+					}
+
+					String s1 = new ...
+					String s2 = new ....
+
+					s1.compareTo(s2); // 
+
+
+					compare(s1,s2); // in client code
+
+		============
+
+		Comparable should be generally used to compare on PK field of the class
+
+		for any other field comparison we should use comparator in client
+		private int id;
+		Product:
+		@Override
+		public int compareTo(Product o) {
+			return this.id - o.id;
+		}
+
+		Client: comparison based on name, price or category goes in client [ Comparator]
+		private String name;
+		private double price;
+		private String category;
+
+
+		===========
+
+			Java Collection Frameworks provides "Arrays.java" which contains methods
+			to find "max", "min"; to 
+			"sort" and "binarySearch", .... on array type data
+
+			This class uses Comparable / Comparator to perform the above mentioned operations
+
+		interface Comparator {
+			int compare(Object o1, Object o2);
+		}
+
+		public Employee implements Comparator {
+
+				public int compare(Object o1, Object o2) {
+						Employee e1 = (Employee) o1;
+						Employee e2 = (Employee) o2;
+						return e1.id - e2-id;
+				}
+		}
+
+
+		interface Comparator<T> {
+				int compare(T o1, T o2);
+		}
+
+		public Employee implements Comparator<Employee> {
+
+				public int compare(Employee o1, Employee o2) {
+					 	return o1.id - o2-id;
+				}
+		}
+
+
+		================================================
+
+		Array type of container limitation:
+			a) Size is fixed
+			b) adding / removing from arbitrary position is difficult
+			c) Need contiguous memory
+
+
+		Java Collection Framework provides "List" data container
+		List:
+			a) ordered collection
+			b) size is not fixed
+				capacity doubles if it reaches the limit
+
+				List of size 8; when we add 9th element
+				List capcaity increases to 16
+
+			c) supports adding duplicate elements
+			d) supports index based operations
+
+			add(4, obj);
+			get(3);
+			remove(10);	
+
+
+			interface Iterator<String> {
+					boolean hasNext();
+					String next();
+					String remove();
+			}
+
+
+			Vector: depricated
+
+				==> Type Safe collection
+				==> All methods in VEctor are synchronized
+					==> Slow
+
+			ArrayList and LinkedList ==> allows concurrent access [ not synchronized]
+			===============
+
+			ArrayList list = new ArrayList(); // avoid this
+
+			List list = new ArrayList();
+
+			list = new LinkedList();
+
+
+			Avoid non-generic collection // not type-safe
+				List list = new ArrayList();
+				list.add("A");
+				list.add(new Mobile());
+				list.add(new Date()); 
+				if(list.get(i) instanceof String) {
+					String s = (String) list.get(i);
+				}
+
+			===========
+
+			List<String> list = new ArrayList<String>();
+
+			List<String> list = new ArrayList<>(); // java 7+ 
+			list.add("A");
+			list.add(new Date());  // compilation error
+
+			String s = list.get(i); 
+
+
+			List<?> different from List<Object>
+
+			? ==> unknown type
+			? ==> allows accessors; won't allow mutation
+
+
+			==========
+			Product
+				Mobile extends Product
+				Tv extends Product
+
+			List<? super Mobile> list
+
+				? can be Mobile; Product or Object
+
+
+			List<? extends Product> list
+				can be Product; Mobile or Tv
+
+			===
+
+			PECS ==> Producer Extends Consumer Super
+		==============================================================================
+
+			Java 8 streams:
+
+			OOP:
+				methods ==> tightly coupled to state of object
+				class Account {
+					double balance;
+					void deposit(double amt) {
+							balance += amt
+					}
+				}
+
+			Functional style of programming:
+				functions ==> not tightly coupled to an object
+
+				sort() ; filter()
+
+
+				Functional style of programming uses High Order Functions [ HOF ]
+					HOF;
+						a) a function which accepts other function as argument
+						b) function which returns a function
+						==> treat functions as first class members [ similar to primitive / object]
+
+			On java 8 stream
+
+			Stream ==> A Channel along which a data flows [ from Network / Database / File / Collection]
+
+			we can use the below HOF:
+				a) filter()
+					gets a subset of data [ input is n ; output is m records]
+					accepts predicateFn
+
+				b) map()
+					to transform the data [ n ==> n]
+					accepts transformFn
+
+				3) forEach
+					traverse accepts Consumer as a function
+
+				4) reduce()
+					accepts aggregateFn
+
+					max(); min(); sum(); count(); etc.....	
+
+				....
+
+			map() and filter() are intermediary functions
+
+			forEach(), collect() and reduce() are terminal functions
+
+
+
+			products.stream()
+			.filter(p -> p.getCategory().equals("mobile"))
+			.forEach(consumer);
+
+
+
+			boolean test(Product p) {
+					return p.getCategory().equals("mobile");
+			}
+
+			=========
+
+			I need to get sum of price of all products
+
+			=====
+
+			Task: get sum of all price of mobiles
+
+			=====================================
+
+			Map ==> storage in the form of key / value pair
+
+			Dictionary / DNS server registry / Employee registry / OS software [ regedit]
+
+			=============================
+
+			HashCode:
+				1) two similar objects should have same hashcode
+				2) possiblity is 2 dissimilar objects can also have same hashcode
+
+
+			Map<String, Double> map = new HashMap<>();
+
+			map.put("Java", 1200.00);
+			map.put("JS" , 899.00);
+			map.put("Oracle" , 1200.00);
