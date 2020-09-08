@@ -843,3 +843,24 @@ Annotation:
 			map.put("Java", 1200.00);
 			map.put("JS" , 899.00);
 			map.put("Oracle" , 1200.00);
+
+			{
+				computer=[Product [id=645, name=Hp Laptop, price=135000.0, category=computer], Product [id=834, name=Logitech Mouse, price=600.0, category=computer], Product [id=88, name=HP Printer, price=19000.0, category=computer]], 
+
+				tv=[Product [id=5, name=Sony Bravia, price=125000.0, category=tv]], 
+
+				mobile=[Product [id=224, name=iPhone, price=98000.0, category=mobile], Product [id=912, name=One Plus, price=32000.0, category=mobile]]
+			}
+
+			forEach(p -> System.out.println(p));
+
+			forEach(System.out::println) ; // method reference
+
+
+		===================================
+
+		
+
+
+		 
+

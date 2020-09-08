@@ -26,19 +26,24 @@ public class MovieExample {
 		List<String> lines = breader.lines().collect(Collectors.toList());
 
 		// To get the list of all movie names
-		List<String> movies = lines.stream().skip(1).map(line -> Arrays.asList(line.split(";")).get(0))
+		List<String> movies = lines.stream()
+				.skip(1)
+				.map(line -> Arrays.asList(line.split(";")).get(0))
 				.collect(Collectors.toList());
 
 		System.out.println(movies);
 
 		// A Beautiful Mind Director
 
-		lines.stream().skip(1).map(line -> Arrays.asList(line.split(";"))).filter(movie -> {
-			String movieName = movie.get(0);
-			return movieName.trim().equalsIgnoreCase("A Beautiful Mind");
-		}).forEach(movie -> {
-			String director = movie.get(2);
-			System.out.println("A Beautiful Mind was directed by " + director);
+		lines.stream()
+			.skip(1)
+			.map(line -> Arrays.asList(line.split(";")))
+			.filter(movie -> {
+				String movieName = movie.get(0);
+				return movieName.trim().equalsIgnoreCase("A Beautiful Mind");
+			}).forEach(movie -> {
+				String director = movie.get(2);
+				System.out.println("A Beautiful Mind was directed by " + director);
 		});
 
 		// Top 5 movies voted on IMDB
