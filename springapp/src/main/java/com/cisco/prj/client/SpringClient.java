@@ -21,6 +21,12 @@ public class SpringClient {
 		Product p = new Product();
 		os.insertProduct(p);
 		
+		System.out.println("*************");
+		
+		String[] names = ctx.getBeanDefinitionNames();
+		for(String name: names) {
+			System.out.println(name);
+		}
 	}
 
 }

@@ -1293,4 +1293,150 @@ Annotation:
     }
   ==========================================================================
 
-  
+
+  		Spring Framework 
+  		================
+  			==> provides a light weight container for building enterprise application
+
+  			At the core of it Spring framework provides Core module which manages the life-cycle of objects.
+  			Wires dependencies [ Dependency Injection == > D part of SOLID Design principle]
+
+  			We no longer create object using "new" keyowrd [ Spring container creates objects]
+
+  			Wiring is also done by Spring.
+
+
+  			Spring Framework provides 
+  				a) Dependency Injection
+  				b) JDBC 
+  					provides templates which make interaction using JDBC easy
+  				c) ORM ==> Object Relational Mapping
+  				d) makes creating web application easy
+  				e) Buildong RESTful web services ==> makes easy
+  				f) AOP module
+  					Aspect Oriented Programming
+  					i) Aspect is a bit of concern which is not a part of main logic but can be used along with main logic
+  						examples: LogAspect, ProfileAspect, SecurityAspect, 
+
+  						This eliminates code tangling and scattering
+  					ii) JoinPoint
+  						place where we can weave an aspect
+  						==> method or exception
+  					iii) PointCut	
+  							selected join point
+  					iv) Advice: Before, After, Around, throws
+
+
+
+  			Without aspect : AOP
+  		logger.log("called FrontController");
+  		String uri = request.getRequestURI(); // addProduct.do listProduct.do, login.do
+		if(uri != null ) {
+			if(uri.endsWith("getProducts.do")) {
+					logger.log("execute get products");
+				ProductDao productDao = new ProductDaoJdbcImpl();
+				try {
+					List<Product> products = productDao.getProducts();
+					request.setAttribute("products", products);
+					//server side 
+					request.getRequestDispatcher("list.jsp").forward(request, response);
+				} catch(DaoException ex) {
+						logger.log("exception occured "  + ex.getMessage());
+					request.setAttribute("msg", ex.getMessage());
+					request.getRequestDispatcher("error.jsp").forward(request, response);
+				}
+			} else if (uri.endsWith("addProduct.do")) {
+			
+
+		==========
+
+		Spring uses ByteCode instrumentation
+
+		Service 												LogAspect
+			doTask() { 													log(arg) {
+					syso("hello");												logger.log(arg);
+			}															}
+
+
+		I select doTask as pointcut and choose Before Advice
+
+		Spring generates the code as:
+
+		doTask() {
+				logAspect.log(arg);
+				syso("hello");
+		}
+
+		==============================================================================
+
+
+		Spring Core Module:
+
+		Metadata can be using XML or annotation
+
+		public class OrderService {
+
+			ProductDao productDao;
+		}
+
+		public interface ProductDao {
+			void addProduct(Product p);
+		}
+
+		public class ProductDaoJdbcImpl implements ProductDao {
+				public void addProduct(Product p) { ...}
+		}
+
+		XML metadata:
+			app.xml
+
+			<bean id="pdo" class="com.cisco.prj.dao.ProductDaoJdbcImpl" />
+
+			<bean id="os" class="com.cisco.prj.service.OrderService" autowire="byType" />
+
+
+		Bytecode Instrumentation ==> spring uses cglib.jar or javaassist.jar
+
+		public class OrderService {
+
+			ProductDao productDao = new ProductdaoJdbcImpl ();
+		}
+
+		============
+
+		Metadata in the form of Annotations:
+			Spring creates instances of classes which has one of these annotions at class level:
+				1) @Component
+				2) @Repository
+				3) @Service
+				4) @Controller
+				5) @RestController
+				6) @Configuration
+
+
+		@Service()
+		public class OrderService {
+			@Autowired
+			ProductDao productDao;
+		}
+
+		public interface ProductDao {
+			void addProduct(Product p);
+		}
+
+		@Repository
+		public class ProductDaoJdbcImpl implements ProductDao {
+				public void addProduct(Product p) { ...}
+		}	
+
+		no xML:
+		Spring creates object ==> productDaoJdbcImpl of ProductDaoJdbcImpl.class
+		orderService ==> OrderService
+
+		==================
+
+		@Repository
+			==> uses SQL-errors codes and gives a appropriate exception
+
+		=========================
+
