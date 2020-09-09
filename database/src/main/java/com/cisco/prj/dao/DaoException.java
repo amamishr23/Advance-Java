@@ -2,10 +2,21 @@ package com.cisco.prj.dao;
 
 public class DaoException extends Exception {
 
-	 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	public DaoException() {
+		super();
+	}
+
+	public DaoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+	public DaoException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 	public DaoException(String message) {
@@ -16,12 +27,6 @@ public class DaoException extends Exception {
 		super(cause);
 	}
 
-	public DaoException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public DaoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-	}
+	 
 
 }

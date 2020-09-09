@@ -21,10 +21,12 @@ public class ProductInsertClient {
 				productDao.addProduct(p);
 				System.out.println("product added");
 			} catch (DaoException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		}
 		
 	}
 
 }
+

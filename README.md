@@ -859,8 +859,438 @@ Annotation:
 
 		===================================
 
+
+
+			Any Questions?
+
+				stream ==> map(), filter(), reduce(), forEach(), collect(), skip(), limit()
+
+			List data contaimer
+			Map data container
+
+		=============================================
+
+		MySQL installed ?
+
+
+		============================================================
+
+		Web application with JDBC to connect to MySQL database 
+
+		Approach:
+			Maven based standalone application to connect to MySQL
+			=> convert this to web based application
+
+
+
+		JDBC ==> Java Database connectivity
+			==> integration APIS to connect to database
+			==> java provides interfaces
+			==> implementation classes are provided by database vendors
+
+
+		Steps:
+
+			1) we need to load classes provided by database vendors
+
+				Class.forName("database driver class");
+
+				Class.forName("oracle.jdbc.OracleDriver");
+
+				Class.forName("com.mysql.jdbc.Driver")
+
+
+				==> these implmentation classes are provided in the form of
+				libraries ==> JAR files
+
+
+			2) Establish a database connection:
+				Done using getConnection() factory method
+
+				Connection is an interface
+
+				Connection con = DriverManager.getConnection(URL, USER , PWD);
+
+				based on URL getConnection() creates OracleConnection / MySQLConnection
+
+				URL
+				jdbc:oracle:thin:@156.123.44.12:1521:CISCO_DB
+
+				jdbc:mysql://localhost:3306/CISCO_DB
+
+
+			3) Send SQL==> following interfaces are provided by Java
+
+				a) Statement
+					if SQL is fixed
+						"select * from products"
+				b) PreparedStatement
+						if SQL accepts IN parameters
+						select * from users where username = ? and password = ?
+
+					Avoid creating SQL using string concatination
+
+					"SELECT * FROM accounts WHERE custID='" + request.getParameter("id") + "'";
+
+					?id=' or '1'='1
+
+					"SELECT * FROM accounts WHERE custID= or 1 = 1"
+				
+				c) CallableStatement
+					to invoke stored procedure
+
+					In database:
+
+						create or replace procedure TRANSACTIONS(FROM , TO , AMT)	
+								SQL1
+								SQL2
+								SQL3
+						END
+
+
+						from Java: call TRANSACTIONS({'SB102', 'SB134', 5000})
+
+			4) ResultSet
+				==> cursor to fetched records of database
+
+			5) Release the resources in finally block
+
+				try {
+						// code
+				} catch(SQLException ex) {
+						// exception handling
+				} finally {
+					con.close();
+				}
+			========================================
+
+
+
+		Maven: uses pom.xml ==> Project object model
+
+			is a java build tool
+			a) manages dependecies [ 3rd part libaries]
+				also manages transitive dependency
+					<dependency>
+						<groupId>org.apache.abc</groupId>
+						<artifactId>ModuleOne</artifactId>
+						<version>1.2.0</version>
+					</dependency>
+
+					This inturn may depend on 
+					other jar files [ or.apache.commons; collections; 5.6 version]
+
+
+			b) Configure goals
+				clean compile test sonar package deploy
+
+				SONAR ==> checkstyle , findbugs
+
+			c) Providing Stds for application folder structure
+				Maven projects are portable across IDEs
+				==> Which Java version version, etc
+
+
+			groupID ==> project
+				com.uber
+
+			artificatID => drivermodule
+
+			version 1.0.0
+
+			groupID ==> project
+				com.uber
+
+			artificatID => customermodule
+			version 1.0.0
+
+			=========================
+
 		
 
+			Day 3
+			=====
 
-		 
+			Web application development
+			---------------------------
 
+			Recap:
+				DaoException class ==> provide abstraction to client
+
+				Backend we might use SQL / NoSQL / FileSystem to store data
+
+				Each one of these throws different exception like IOException, SQLException, ...
+
+				We catch them and use DaoException to re-throw
+
+				client has to have only catch(DaoException ex) { }
+
+			==========
+
+			Product getId(int id) throws DaoException {
+				select statement 
+				try {
+				if(rs.next()) {
+					Product p = new Product(rs.getInt(id), ..)
+				} else {
+					throw new DaoException("Product with " + id + " doesn;t exit  !!!");
+				}
+				} catch(SQLException ex) {
+					throw new DaoException("unable to get product" , ex);
+				}
+			}
+
+			=============================================
+
+			Building Traditional web application using Servlet technology:
+
+			Servlet is a technology using which we write server side code using Java as programming
+			language
+				Servlet technology has the following components:
+					a) Servlet
+					b) JSP
+					c) Filters
+					d) Listeners
+
+				These components execute with an container called as Web Container / Servlet Container / Servlet engine
+
+			We have different containers like "Tomcat" , "Jetty" , "JRocket" , ...
+
+
+			Servlets are multi-threaded
+
+			@WebServlet("/register")
+			public class RegisterServlet extends HttpServlet {
+
+			}
+
+
+
+			===========
+
+			login.html
+				<html>
+					<body>
+						<form method="post" action="login">
+							2 text box to accept username and pwd
+							button to submit
+						</form>
+					</body>
+				</html>
+
+
+			JavaScript:
+				React / Angular / jQuery / Vanila JS
+
+				a.js
+					$.ajax("uRI", function(data) {
+						//process the data ..
+					});
+
+				a.js will execute in Browser / Engine has no role in executing this
+
+
+
+	HTTP Methods:
+		Traditional web application development we use "GET" and "POST" http methods
+
+		any request from "address bar" and "hyper link" is a "GET" request to server
+		[ any data sent to server is visible in address bar ]
+
+		limitation -- 255 characters
+
+		"POST" request is generally from "FORM" data [ payload is sent ==> data in body]	
+		submitted data is not visible in address bar
+		No limitation
+
+			@WebServlet("/register")
+			public class RegisterServlet extends HttpServlet {
+				// dependecy injection
+				public void doGet(HttpServletRequest req, HttpServletResponse res) {
+
+				}
+
+				public void doPost(HttpServletRequest req, HttpServletResponse res) {
+
+				}
+			}
+
+		=========================
+
+
+
+		Prior to Servlet 2.5 version we used XML for metadata instead of Annotations
+
+		public class RegisterServlet extends HttpServlet {
+				// dependecy injection
+				public void doGet(HttpServletRequest req, HttpServletResponse res) {
+
+				}
+
+				public void doPost(HttpServletRequest req, HttpServletResponse res) {
+
+				}
+			}
+
+
+		web.xml ==> Deployment descriptor
+			<servlet>
+				<servlet-name>First</servlet-name>
+				<serlvet-class>com.cisco.prj.web.RegisterServlet</serlvet-class>
+			</servlet>
+
+			<servlet-mapping>
+				<servlet-name>First</servlet-name>
+				<url-pattern>/register</url-pattern>
+			</servlet-mapping>
+
+		without web.xml: @WebServlet("/register")
+
+
+		=======
+
+
+		javac RegisterServlet.java
+
+		jar /src/*.* -xvf example.war
+
+
+		=======================
+
+
+
+		webapp ==> folder contains "view" related files like [ HTML / CSS / JS / image and JSP pages]
+
+
+		"src/main/java" ==> Servlets/ Filter/ Listener reside along with other java code
+
+
+		MIME types:
+			image/gif
+			image/png
+
+			text/plain
+			text/css
+			text/html
+
+
+
+		Goals:
+			jetty:run
+
+			or 
+
+			tomcat:run
+
+			depending on maven plugins added
+
+
+		Prefer Servlets as Controller ==> should have application logic [ Flow of application ]
+
+		Use HTML as presentation [ for pure static content]
+
+		Use JSP as presentation [ static + dynamic content ]
+
+		Java Server Pages ==> JSP 
+
+
+		*.do ==> FrontController
+
+		addProduct.do
+
+		deleteProduct.do
+
+		login.do
+
+		register.do
+
+		logout.do
+
+
+		ServerSide Redirection : can be used for multi stage processing of data
+		request.getRequestDispatcher("list.jsp").forward(request, response);
+
+
+		${p.id} ==> out.print(p.getId())
+
+		${p.price} ==> out.print(p.getPrice())
+
+		===============================
+
+
+		Servlet / JSP
+			==> execute based on URI request from client
+
+		Listeners ==> run within a servlet engine similar to JSP and Servlet
+					  They execute based on events and not for client request
+
+		ServletContextListener gets executed when an application is deployed / undeployed
+
+			contextIntialized()
+			contextDestroyed()
+
+			==> generally any initialization required for the web application can be done here:
+				Example: our own custom Thread pool
+					reading from properties file 
+					configuration
+
+		=======================================
+
+		Http Protocol is a stateless protocol:
+		Doesn't understand the conversational state of a client, treats every request as comming from new client
+
+		Tracking converstational state of client is important for many application:
+			a) Email
+			b) Shopping
+			c) online exam
+			.....
+
+		Session Tracking is the ability given to server side code to track conversational state of client
+			a) Cookie
+			b) URL Rewriting
+
+
+			${user}
+
+				JSTL searchs in "request", "session" , "context"
+
+
+			<%
+				String user = (String) session.getAttribute("user");
+
+			%>
+
+
+====================================================================================================================
+
+	JSP ==> Dynamic + static content
+	HTML ==> static content [ very rarely we use this]
+	index.html ===> index.jsp [ so that i can display messages ]
+
+	Servlet
+		==> Should be used as controller [ locus for interaction between View and backend]
+
+	Listeners
+		==> ServletContextListener
+			==> whenever application is deployed / undeployed they get excuted
+		==> HttpSessionListener
+			==> HttpSession created or calling invalidate() 
+		==> HttpSessionAttributeListener
+			if any data is added to session / remove data from session
+
+	HttpSession ==> to keep track of conversational state of client
+
+	========================================================================================
+
+
+ 	public void contextDestroyed(ServletContextEvent sce)  { 
+ 		close connections
+    }
+
+	 
+    public void contextInitialized(ServletContextEvent sce)  { 
+    		Pool of database connection [100]
+    }
+  ==========================================================================
+
+  
