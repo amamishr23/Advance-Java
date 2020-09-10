@@ -1788,4 +1788,26 @@ Annotation:
 
 	====================================================================
 
-	
+	Spring Form ===> Java Object [ Product] ==> Auto binding using @ModelAttribute
+		this is taking care of converting String to primitive data types
+
+		No need for Double.parseDouble, Integer.parseInt
+
+		===
+
+		Some scenarios String input has to be converted into non-primitive data
+
+		TextBox: 10-09-2020 [ String ]
+		TextBox: 5, 1 A Main, Bangalore, Karnataka
+
+		Java: class Trip
+					Date date; // 10-09-2020
+					Address address;
+
+		class Address {
+				houseNo;
+				street;
+				city;
+				state;
+		}
+
