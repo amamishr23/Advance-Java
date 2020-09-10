@@ -1625,7 +1625,167 @@ Annotation:
 			}
 =================================================================
 
+	ORM:
+		1) Database connection Pool
+		2) ORM provider [ Hibernate, KODO, TopLink,...]
+		3) EntityManagerFactory [ factory class to create EntityManager]
+		4) EntityManager class manages entites using PersistenceContext enviroment
+
+
+	ORM mapping maps instance variables to columns [ same name in both]
+
+	ORM ==> DDL operations 
+			CREATE TABLE, ALTER Table, DRop table
+
+			If table already exists it can map
+			If table doesn't exist, create table
+
+
+		DriverManager ==> Single database connection
+
+		DataSource ==> pool of database connection
+
+
+	@EnableTransactionManagement ==> enables Declarative transaction managment
+
+	Programmatic Transaction management:
+
+	public void transfer(Account a1, Account a2, double amt) throws DaoException {
+		String SQL1 = "UPDATE account set balance = balance -" + amt + " where no = " + a1;
+		String SQL2 = "UPDATe ..."
+		String SQL3 = " insert int otracnsction table ..."
+		Connection con = null;
+
+		try {
+			con = DBUtil.getConn();
+			con.setAutoCommit(false);
+			PreparedStatement ps1 = con.prepareStatement(SQL1);
+			PreparedStatement ps2 = con.prepareStatement(SQL1);
+			PreparedStatement ps3 = con.prepareStatement(SQL1);
+				// IN parameters are set
 	
 
+			...
+			con.commit();
+			} catch(SQLException ex) {
+					con.rollback();
+			}
+
+	===========
+
+	JPA without Spring:
+
+	public void transfer(Account a1, Account a2, double amt) throws DaoException {
+		 Transaction tx = em.beginTransaction();
+
+		try {	
+				Tranasction transation  = ...
+				em.merge(a1);
+				em.merge(a2);
+				em.persist(transaction);	 
+				tx.commit();
+			} catch(SQLException ex) {
+					tx.rollback();
+			}
 
 
+
+			========
+
+
+		@EnableTransactionManagement ==> enables Declarative transaction managment
+
+		class Service {
+
+			@Transacational
+			public void transferFunds(Account a1, Account a2, double amt) {
+				em.merge(a1);
+				em.merge(a2);
+				em.persist(transaction);	
+			}
+		}
+
+		inside the transferFunds() if no exceptions occurs, springs invokes commit 
+		if exception occurs it calls rollback
+
+
+	@Transactional on methods which perform INSERT , dELETE and UPDATE
+
+	==================================================================
+
+	Task:
+		Customers ==> add customer and get customers based on first name
+		CustomerDao, CustomerDaoJpaImpl, inject Customer Dao into  OrderService
+
+		client code to perform above operations
+
+		15 min + 15 tea break
+
+	========================================================================
+
+
+	Spring WEB module [ MVC ]
+
+
+	@Controller
+	public class ProductController {
+		@Autowired
+		OrderService service;
+
+		@RequestMapping("getproducts.do")
+		public ModelAndView method(...) {
+			ModelAndView mav = new ModelAndView();
+				mav.addObject('name' , "Banuprakash"); // request.setAttribute("products", ..)
+				mav.addObject("products", service.getProducts());
+				mav.setViewName("list.jsp");
+			return mav;			
+		}
+	}
+
+	====================
+
+	Similary implment 
+
+		CustomerController
+
+		List all customers
+		add a customer
+
+	===============
+
+		Dao
+			interfaces 
+			and implementations
+
+			generally 1 per table
+
+		Service
+			1 per applicaiton
+			1 per module
+			1 per actor
+		entity
+			1 per table [ mapping; no logic]
+
+		Controller
+			==> view related
+	=============================
+		i18N
+
+		ResourceBundleMessageSource res = new ResourceBundleMessageSource();
+		res.setBasename("messages");
+
+		used to read properties file
+
+		setBasename("messages");
+
+		If Locale is French
+
+		this uses messages_fr.properties
+
+		If set to Hindi : messages_hi.properties
+
+		If not found it uses [ messages.properties]
+
+	====================================================================
+
+	

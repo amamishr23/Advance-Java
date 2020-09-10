@@ -1,11 +1,14 @@
 package com.cisco.prj.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="products")
@@ -21,6 +24,9 @@ public class Product {
 	private double price;
 	
 	private int quantity;
+	
+	@Transient
+	private Date manufacturedDate = new Date();
 	
 	public Product() {
 	}
@@ -53,6 +59,12 @@ public class Product {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public Date getManufacturedDate() {
+		return manufacturedDate;
+	}
+	public void setManufacturedDate(Date manufacturedDate) {
+		this.manufacturedDate = manufacturedDate;
 	}
 	
 }	

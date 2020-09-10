@@ -8,8 +8,11 @@ C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\web\ProductCont
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\cfg\AppInitializer.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\client\ProductListClient.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\web\GreetingController.java
+C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\web\ProductValidator.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\dao\CustomerDaoJpaImpl.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\entity\Customer.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\client\ProductAddClient.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\client\SpringClient.java
+C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\web\DateConvertor.java
+C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\cfg\LogAspect.java
 C:\Trainings WS\CISCO_2020\springapp\src\main\java\com\cisco\prj\dao\CustomerDao.java
