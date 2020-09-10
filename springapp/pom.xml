@@ -5,6 +5,7 @@
 	<groupId>com.cisco</groupId>
 	<artifactId>springapp</artifactId>
 	<version>1.0.0</version>
+	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<!-- Generic properties -->
