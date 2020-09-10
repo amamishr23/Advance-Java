@@ -1440,3 +1440,192 @@ Annotation:
 
 		=========================
 
+		Day 4:
+		------
+			Web application: Servlet / JSP and Listeners
+
+			Spring 5.x application
+				Metadata ==> annoation
+
+				1) Spring creates objects of classes which has one of these annoations @ class level
+
+					a) @Component
+					2) @Repository
+					3) @Service
+					4) @Configuration
+					5) @Controller
+					6) @RestController
+
+				2) Spring auto wires depdencies if we place @Autowired on field, method, constructor
+
+				public class OrderService {
+						@Autowired(required=false)
+						private ProductDao productDao;
+				}
+
+				===
+
+				public class OrderService {
+						private ProductDao productDao;
+
+						@Autowired
+						public OrderService(ProductDao pd) {
+							this.productDao = pd;
+						}
+				}
+
+				=======
+
+
+				public class OrderService {
+						private ProductDao productDao;
+
+						@Autowired
+						public void setProductDao(ProductDao pd) {
+							this.productDao = pd;
+						}
+				}
+
+				=======
+
+
+				public class OrderService {
+						@Autowired(required=false)
+						private ProductDao productDao;
+				}
+
+				@Repository
+				class ProductDaoJdbcImpl implements ProductDao {
+
+				}
+
+				@Repository
+				class ProductDaoFileImpl implements ProductDao {
+
+				}
+
+				// Required one bean but found 2; productDaoJdbcImpl, productDaoFileImpl
+
+				Resolve:
+
+				public class OrderService {
+						@Autowired(required=false)
+						@Qualifier("productDaoFileImpl")
+						private ProductDao productDao;
+				}
+
+			=====================
+
+			@Component
+			public class SampleClass {
+
+			}
+
+			Spring uses default constructor to instantiate:
+
+			=========================
+
+
+			I have a class MyClass, which is not marked with any
+			above mentioned annotations [ @Componet, ...]
+
+			This class also doesn't have default constructor
+
+			class MyClass {
+				MyClass(int x, String s) {
+					//
+				}
+			}
+
+
+			@Service
+			public class OrdeService {
+					@Autowired
+					private ProductDao productDao;
+
+
+					@Autowired
+					private MyClass obj; // fails
+			}
+
+			===================
+
+			Resolve:
+
+			class MyClass {
+				MyClass(int x, String s) {
+					//
+				}
+			}
+
+			@Configuration
+			public class MyConfig {
+				@Bean
+				public MyClass getMyClass() {
+
+						return new MyClass(22,"Sample text");
+				}
+			}
+
+			@Service
+			public class OrderService {
+					@Autowired
+					private ProductDao productDao;
+
+
+					@Autowired
+					private MyClass obj; // fails
+			}
+
+	=========================================================================================
+
+
+
+	ORM Framework : Object Relational Mapping
+		Java Object/class < -------------------> Relational Database table
+		instance variables <-----------------> columns of table
+
+		@Table, @Column
+
+		Many ORM frameworks are available:
+			Hibernate --> JBoss [ popular]
+			TopLink --> Oracle
+			KODO --> BEA --> Oracle
+			openJPA --> Apache
+			EclipseLink --> Eclipse
+
+		Java came with specification for ORM ==> JPA
+		Java Persistence API ==> Only specification
+		ORM frameworks implement the specifications provided by JPA
+
+
+
+		@Override
+	public void addProduct(Product p) throws DaoException {
+		String SQL = "INSERT INTO products (id, name, price, quantity) VALUES (0, ?, ?, ?)";
+		Connection con = null;
+
+		try {
+			con = DBUtil.getConn();
+			PreparedStatement ps = con.prepareStatement(SQL);
+			ps.setString(1, p.getName());
+			ps.setDouble(2, p.getPrice());
+			ps.setInt(3, p.getQuantity());
+			ps.executeUpdate(); // INSERT, DeLETE and UPDATE
+		} catch (SQLException e) {
+			throw new DaoException("unable to add product", e);
+		} finally {
+			DBUtil.closeConnection(con);
+		}
+	}
+
+	with ORM:
+			public void addProduct(Product p) {
+				em.persist(p);
+			}
+=================================================================
+
+	
+
+
+

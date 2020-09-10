@@ -14,8 +14,16 @@ public class ProductDaoFileImpl implements ProductDao {
 		System.out.println("file Store!!!");
 	}
 
+	 
+
 	@Override
-	public List<Product> getPriducts() {
+	public List<Product> getProducts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product getById(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -6,5 +6,6 @@ import com.cisco.prj.entity.Product;
 
 public interface ProductDao {
 	void addProduct(Product p);
-	List<Product> getPriducts();
+	List<Product> getProducts();
+	Product getById(int id);
 }
